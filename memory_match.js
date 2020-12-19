@@ -1,6 +1,7 @@
 let gridColors = [];
 let gridNumbers = []
-var gridAssignments;
+let cardsShowing = [];
+let gridAssignments;
 
 function setGrid(){
     gridColors = ["red", "yellow", "green", "blue", "orange","purple", "pink", "brown"];
@@ -30,9 +31,9 @@ function assignColor(num1, num2, clr){
 
 }
 
-function setBlack(num1, num2){
-    document.getElementById("grid-item-" + num1).style.backgroundColor = "black";
-    document.getElementById("grid-item-" + num2).style.backgroundColor ="black";
+function setBlack(num1ID, num2ID){
+    document.getElementById(num1ID).style.backgroundColor = "black";
+    document.getElementById(num2ID).style.backgroundColor ="black";
     console.log(num1 + " and " + num2 + " set to black");
 }
 
@@ -58,6 +59,7 @@ function startGame(){
         console.log("gridColors: " + gridColors);
     }
     console.log(gridAssignments)
+    runGame();
 }
 
 function showColor(item){
@@ -66,5 +68,30 @@ function showColor(item){
     let itemColor = gridAssignments[itemID];
     console.log(itemColor);
     document.getElementById(itemID).style.backgroundColor = itemColor;
-
+    cardsShowing.push(itemID);
+    runGame();
 }
+
+function runGame(){
+    console.log("game running");
+    if (cardsShowing.length == 2){
+        checkCards();
+    }
+}
+
+function checkCards() {
+    let card1Color =  document.getElementById(cardsShowing[0]).style.backgroundColor;
+    let card2Color = document.getElementById(cardsShowing[1]).style.backgroundColor;
+    console.log(card1Color);
+    console.log(card2Color);
+    if (card1Color == card2Color){
+        console.log("Match!!");
+        //set opacity
+        //disable onclick
+    }else{
+        console.log("no match");
+        //set black
+    }
+    cardsShowing = [];
+}
+    
