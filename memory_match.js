@@ -2,6 +2,8 @@ let gridColors = [];
 let gridNumbers = []
 let cardsShowing = [];
 let gridAssignments;
+let gameRunning = 0;
+let score = 0;
 
 function setGrid(){
     gridColors = ["red", "yellow", "green", "blue", "orange","purple", "pink", "brown"];
@@ -31,10 +33,12 @@ function assignColor(num1, num2, clr){
 
 }
 
-function setBlack(num1ID, num2ID){
-    document.getElementById(num1ID).style.backgroundColor = "black";
-    document.getElementById(num2ID).style.backgroundColor ="black";
-    console.log(num1 + " and " + num2 + " set to black");
+function setBlack(){
+    let card1 = document.getElementById(cardsShowing[0]);
+    let card2 = document.getElementById(cardsShowing[1]);
+    card1.style.backgroundColor = "black";
+    card2.style.backgroundColor ="black";
+    cardsShowing = [];
 }
 
 function removeNumber(num){
@@ -45,6 +49,7 @@ function removeNumber(num){
 }
 
 function startGame(){
+    gameRunning = 1;
     setGrid();
     for(let i = 0; i < 8; i++){
         console.log("----------------");
@@ -63,6 +68,7 @@ function startGame(){
 }
 
 function showColor(item){
+    if (gameRunning == 0) {return null;}
     let itemID =  item.id;
     console.log(itemID);
     let itemColor = gridAssignments[itemID];
@@ -80,18 +86,41 @@ function runGame(){
 }
 
 function checkCards() {
-    let card1Color =  document.getElementById(cardsShowing[0]).style.backgroundColor;
-    let card2Color = document.getElementById(cardsShowing[1]).style.backgroundColor;
+    let card1 = document.getElementById(cardsShowing[0]);
+    let card2 = document.getElementById(cardsShowing[1]);
+    let card1Color = card1.style.backgroundColor;
+    let card2Color = card2.style.backgroundColor;
     console.log(card1Color);
     console.log(card2Color);
     if (card1Color == card2Color){
         console.log("Match!!");
-        //set opacity
-        //disable onclick
+        card1.onclick = null;
+        card2.onclick = null;
+        card1.style.opacity = 0.5;
+        card2.style.opacity = 0.5;
+        updateScore();
+        cardsShowing = [];
     }else{
         console.log("no match");
-        //set black
+        setTimeout(setBlack, 1000);
     }
-    cardsShowing = [];
 }
     
+function updateScore(){
+    score++;
+    console.log("score: " + score);
+    let scoreDisplay = document.getElementById("game-score");
+    scoreDisplay.innerText = "Score: " + score;
+    if (score == 8) {
+        alert("You WIN!!!");
+        resetGame();
+    }
+    
+}
+
+function resetGame(){
+    console.log("resetting game");
+    gameRunning = 0;
+    let scoreDisplay = document.getElementById("game-score");
+    scoreDisplay.innerText = "Score: 0";
+}
