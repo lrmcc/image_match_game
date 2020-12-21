@@ -39,19 +39,17 @@ function resetGrid(){
 function resetGame(){
     console.log("resetting game");
     let scoreDisplay = document.getElementById("game-score");
+    score = 0;
     scoreDisplay.innerText = "Score: 0";
     resetCards();
 }
 
 function resetCards(){
     for (const [key, value] of Object.entries(gridAssignments)) {
-        console.log("key: " + key);
-        console.log("value: " + value);
         let card = document.getElementById(key);
-        card.style.backgroundColor = value;
+        card.style.opacity = 1;
+        card.style.backgroundColor = "black";
         card.setAttribute("onclick", "showColor(this)");
-        //card.onclick = "showColor(this)";  .removeAttribute("class");
-
     }
 }
 
@@ -108,18 +106,21 @@ function runGame(){
 }
 
 function checkCards() {
-    let card1 = document.getElementById(cardsShowing[0]);
-    let card2 = document.getElementById(cardsShowing[1]);
-    let card1Color = card1.style.backgroundColor;
-    let card2Color = card2.style.backgroundColor;
+    console.log("******* CHECK CARDS ********");
+    let card1Element = document.getElementById(cardsShowing[0]);
+    let card2Element = document.getElementById(cardsShowing[1]);
+    let card1Color = gridAssignments[cardsShowing[0]];
+    let card2Color = gridAssignments[cardsShowing[1]];
+    let card1ID = cardsShowing[0];
+    let card2ID = cardsShowing[1];
     console.log(card1Color);
     console.log(card2Color);
-    if (card1Color == card2Color){
+    if (card1Color == card2Color && card1ID!==card2ID){
         console.log("Match!!");
-        card1.removeAttribute("onclick");
-        card2.removeAttribute("onclick");
-        card1.style.opacity = 0.5;
-        card2.style.opacity = 0.5;
+        card1Element.removeAttribute("onclick");
+        card2Element.removeAttribute("onclick");
+        card1Element.style.opacity = 0.5;
+        card2Element.style.opacity = 0.5;
         updateScore();
         cardsShowing = [];
     }else{
